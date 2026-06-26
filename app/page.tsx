@@ -100,34 +100,75 @@ const announcements = [
   },
 ];
 
-const youngGroupEvents = [
+type YoungCalendarEvent = {
+  date: string;
+  title: string;
+  description: string;
+  location: string;
+};
+
+const youngCalendarYear = 2026;
+
+const youngCalendarEvents: YoungCalendarEvent[] = [
   {
-    date: "Próximamente",
-    title: "Encuentro del Grupo Joven",
-    text: "Tarde de convivencia para conocerse, compartir ideas y preparar las próximas actividades.",
+    date: "2026-02-14",
+    title: "Convivencia del Grupo Joven",
+    description:
+      "Tarde de convivencia para conocerse, compartir ideas y preparar actividades de Cuaresma.",
+    location: "Casa de Hermandad",
   },
   {
-    date: "Cuaresma",
-    title: "Preparación de Semana Santa",
-    text: "Reuniones para colaborar en cultos, organización y participación dentro de la Hermandad.",
+    date: "2026-03-07",
+    title: "Preparación de Cuaresma",
+    description:
+      "Reunión para organizar la participación del Grupo Joven en los cultos cuaresmales.",
+    location: "Sede de la Hermandad",
   },
   {
-    date: "Durante el año",
-    title: "Convivencias y actividades",
-    text: "Encuentros, propuestas formativas, momentos de oración y actividades pensadas para niños, adolescentes y jóvenes.",
+    date: "2026-04-03",
+    title: "Viernes Santo",
+    description:
+      "Participación del Grupo Joven en la jornada principal de la Hermandad.",
+    location: "Manzanares",
+  },
+  {
+    date: "2026-06-21",
+    title: "Encuentro de verano",
+    description:
+      "Actividad de convivencia antes del descanso estival.",
+    location: "Por confirmar",
   },
 ];
 
-const youngGroupNews = [
-  {
-    title: "Un grupo joven con ganas de sumar",
-    text: "El Grupo Joven quiere ser un espacio cercano, donde los más pequeños y los jóvenes puedan sentirse parte de la Hermandad desde el primer día.",
-  },
-  {
-    title: "Participar también es aprender",
-    text: "Cada actividad es una oportunidad para conocer mejor a nuestros titulares, la historia de la cofradía y el sentido de la vida de hermandad.",
-  },
+const monthNames = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
 ];
+
+const weekDays = ["L", "M", "X", "J", "V", "S", "D"];
+
+function getDaysInMonth(year: number, month: number) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function getFirstDayOffset(year: number, month: number) {
+  const day = new Date(year, month, 1).getDay();
+  return day === 0 ? 6 : day - 1;
+}
+
+function getEventsForDay(date: string) {
+  return youngCalendarEvents.filter((event) => event.date === date);
+}
 
 const quickLinks = [
   { label: "Inicio", href: "#inicio" },
@@ -191,6 +232,8 @@ const buttonSecondary =
 export default function Home() {
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
   const [daysUntilGoodFriday, setDaysUntilGoodFriday] = useState(0);
+  const [selectedYoungEvent, setSelectedYoungEvent] =
+  useState<YoungCalendarEvent | null>(null);
 
   useEffect(() => {
     setDaysUntilGoodFriday(getDaysUntilGoodFriday());
@@ -594,104 +637,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="grupo-joven" className="mx-auto max-w-7xl px-6 py-16 md:px-10">
-        <div className={`${cardClass} overflow-hidden`}>
-          <div className="grid gap-10 p-8 md:p-10 lg:grid-cols-[1fr_0.9fr]">
-            <div>
-              <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
-                <Sparkle className="h-5 w-5" />
-                <span className="text-sm tracking-[0.24em]">GRUPO JOVEN</span>
-              </div>
-
-              <h3 className="text-3xl font-semibold text-[#f3ead7] md:text-4xl">
-                Jóvenes con ganas de vivir la Hermandad desde dentro
-              </h3>
-
-              <p className="mt-5 max-w-2xl leading-8 text-[#d8cbb3]">
-                El Grupo Joven es el punto de encuentro para niños, adolescentes y jóvenes que quieren
-                acercarse a la Hermandad, participar en sus actividades y aprender poco a poco el valor
-                de nuestra tradición.
-              </p>
-
-              <p className="mt-4 max-w-2xl leading-8 text-[#d8cbb3]">
-                No se trata solo de ayudar en Semana Santa: también es convivir, formarse, hacer grupo y
-                sentirse parte de una familia que cuida su fe, su historia y su futuro.
-              </p>
-
-              <a
-                href={GOOGLE_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-7 inline-flex rounded-2xl border border-[#f3ead7]/40 bg-[#f3ead7] px-6 py-4 font-semibold text-[#070504] transition hover:bg-white"
-              >
-                Solicitar información para el Grupo Joven
-              </a>
-            </div>
-
-            <div className="rounded-[1.8rem] border border-[#f3ead7]/12 bg-black/30 p-6">
-              <p className="text-sm uppercase tracking-[0.22em] text-[#d8cbb3]">
-                ¿Qué se puede hacer?
-              </p>
-
-              <div className="mt-5 space-y-4 text-[#d8cbb3]">
-                {[
-                  "Participar en actividades y convivencias.",
-                  "Colaborar en cultos y actos de la Hermandad.",
-                  "Conocer mejor a los titulares y la historia de la cofradía.",
-                  "Preparar iniciativas para niños, adolescentes y familias.",
-                ].map((item) => (
-                  <div key={item} className="rounded-2xl border border-[#f3ead7]/10 bg-[#f3ead7]/5 p-4">
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-[#f3ead7]/10 px-8 py-10 md:px-10">
-            <div className="grid gap-8 lg:grid-cols-2">
-              <div>
-                <div className="mb-5 flex items-center gap-3 text-[#f3ead7]">
-                  <CalendarDays className="h-5 w-5" />
-                  <h4 className="text-2xl font-semibold">Agenda del Grupo Joven</h4>
-                </div>
-
-                <div className="space-y-4">
-                  {youngGroupEvents.map((event) => (
-                    <div key={event.title} className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-5">
-                      <p className="text-sm uppercase tracking-[0.18em] text-[#d8cbb3]">
-                        {event.date}
-                      </p>
-                      <h5 className="mt-2 text-xl font-semibold text-[#f3ead7]">
-                        {event.title}
-                      </h5>
-                      <p className="mt-2 leading-7 text-[#d8cbb3]">{event.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div className="mb-5 flex items-center gap-3 text-[#f3ead7]">
-                  <ScrollText className="h-5 w-5" />
-                  <h4 className="text-2xl font-semibold">Noticias del Grupo Joven</h4>
-                </div>
-
-                <div className="space-y-4">
-                  {youngGroupNews.map((news) => (
-                    <div key={news.title} className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-5">
-                      <h5 className="text-xl font-semibold text-[#f3ead7]">
-                        {news.title}
-                      </h5>
-                      <p className="mt-2 leading-7 text-[#d8cbb3]">{news.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       
       <section id="ingreso" className="mx-auto max-w-7xl px-6 py-10 md:px-10">
         <div className={`${cardClass} overflow-hidden`}>
