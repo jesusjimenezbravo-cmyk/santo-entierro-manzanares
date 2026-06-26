@@ -100,6 +100,35 @@ const announcements = [
   },
 ];
 
+const youngGroupEvents = [
+  {
+    date: "Próximamente",
+    title: "Encuentro del Grupo Joven",
+    text: "Tarde de convivencia para conocerse, compartir ideas y preparar las próximas actividades.",
+  },
+  {
+    date: "Cuaresma",
+    title: "Preparación de Semana Santa",
+    text: "Reuniones para colaborar en cultos, organización y participación dentro de la Hermandad.",
+  },
+  {
+    date: "Durante el año",
+    title: "Convivencias y actividades",
+    text: "Encuentros, propuestas formativas, momentos de oración y actividades pensadas para niños, adolescentes y jóvenes.",
+  },
+];
+
+const youngGroupNews = [
+  {
+    title: "Un grupo joven con ganas de sumar",
+    text: "El Grupo Joven quiere ser un espacio cercano, donde los más pequeños y los jóvenes puedan sentirse parte de la Hermandad desde el primer día.",
+  },
+  {
+    title: "Participar también es aprender",
+    text: "Cada actividad es una oportunidad para conocer mejor a nuestros titulares, la historia de la cofradía y el sentido de la vida de hermandad.",
+  },
+];
+
 const quickLinks = [
   { label: "Inicio", href: "#inicio" },
   { label: "Historia", href: "#historia" },
@@ -177,55 +206,52 @@ export default function Home() {
     <main
       className="min-h-screen overflow-x-hidden text-[#f3ead7]"
       style={{
-        fontFamily:
-          "Georgia, 'Times New Roman', 'Cormorant Garamond', serif",
+        fontFamily: "Georgia, 'Times New Roman', 'Cormorant Garamond', serif",
       }}
     >
-      {/* FONDO NEGRO COFRADE / TERCIOPELO SOBRIO */}
+      <div
+        className="fixed inset-0 -z-40"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 0%, rgba(243,234,215,0.08), transparent 28%), radial-gradient(circle at 20% 35%, rgba(255,255,255,0.035), transparent 30%), radial-gradient(circle at 80% 55%, rgba(255,255,255,0.025), transparent 32%), linear-gradient(145deg, #010101 0%, #050505 35%, #111111 62%, #030303 100%)",
+        }}
+      />
 
-<div
-  className="fixed inset-0 -z-40"
-  style={{
-    background:
-      "radial-gradient(circle at 50% 0%, rgba(243,234,215,0.08), transparent 28%), radial-gradient(circle at 20% 35%, rgba(255,255,255,0.035), transparent 30%), radial-gradient(circle at 80% 55%, rgba(255,255,255,0.025), transparent 32%), linear-gradient(145deg, #010101 0%, #050505 35%, #111111 62%, #030303 100%)",
-  }}
-/>
+      <div
+        className="fixed inset-0 -z-30 opacity-[0.18]"
+        style={{
+          backgroundImage:
+            "linear-gradient(115deg, rgba(255,255,255,0.045) 0%, transparent 22%, rgba(255,255,255,0.025) 42%, transparent 68%, rgba(255,255,255,0.035) 100%)",
+          backgroundSize: "100% 100%",
+        }}
+      />
 
-<div
-  className="fixed inset-0 -z-30 opacity-[0.18]"
-  style={{
-    backgroundImage:
-      "linear-gradient(115deg, rgba(255,255,255,0.045) 0%, transparent 22%, rgba(255,255,255,0.025) 42%, transparent 68%, rgba(255,255,255,0.035) 100%)",
-    backgroundSize: "100% 100%",
-  }}
-/>
+      <div
+        className="fixed inset-0 -z-20 opacity-[0.12]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(92deg, rgba(243,234,215,0.035) 0px, rgba(243,234,215,0.012) 1px, transparent 3px, transparent 9px)",
+          mixBlendMode: "soft-light",
+        }}
+      />
 
-<div
-  className="fixed inset-0 -z-20 opacity-[0.12]"
-  style={{
-    backgroundImage:
-      "repeating-linear-gradient(92deg, rgba(243,234,215,0.035) 0px, rgba(243,234,215,0.012) 1px, transparent 3px, transparent 9px)",
-    mixBlendMode: "soft-light",
-  }}
-/>
+      <div
+        className="fixed inset-0 -z-10 opacity-[0.075]"
+        style={{
+          backgroundImage:
+            "linear-gradient(135deg, transparent 0%, rgba(243,234,215,0.10) 48%, transparent 52%), linear-gradient(45deg, transparent 0%, rgba(243,234,215,0.06) 48%, transparent 52%)",
+          backgroundSize: "180px 180px",
+          mixBlendMode: "soft-light",
+        }}
+      />
 
-<div
-  className="fixed inset-0 -z-10 opacity-[0.075]"
-  style={{
-    backgroundImage:
-      "linear-gradient(135deg, transparent 0%, rgba(243,234,215,0.10) 48%, transparent 52%), linear-gradient(45deg, transparent 0%, rgba(243,234,215,0.06) 48%, transparent 52%)",
-    backgroundSize: "180px 180px",
-    mixBlendMode: "soft-light",
-  }}
-/>
-
-<div
-  className="fixed inset-0 -z-10 opacity-[0.35]"
-  style={{
-    background:
-      "radial-gradient(circle at center, transparent 0%, transparent 45%, rgba(0,0,0,0.55) 100%)",
-  }}
-/>
+      <div
+        className="fixed inset-0 -z-10 opacity-[0.35]"
+        style={{
+          background:
+            "radial-gradient(circle at center, transparent 0%, transparent 45%, rgba(0,0,0,0.55) 100%)",
+        }}
+      />
 
       <header className="sticky top-0 z-50 border-b border-[#f3ead7]/10 bg-black/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
@@ -243,11 +269,7 @@ export default function Home() {
                   opacity: [0.08, 0.24, 0.08],
                   x: ["-20%", "20%", "-20%"],
                 }}
-                transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
               />
             </div>
 
@@ -441,9 +463,7 @@ export default function Home() {
             {daysUntilGoodFriday}
           </h2>
 
-          <p className="mt-3 text-xl text-[#d8cbb3]">
-            días para la Estación de Penitencia
-          </p>
+          <p className="mt-3 text-xl text-[#d8cbb3]">días para la Estación de Penitencia</p>
 
           <p className="mx-auto mt-6 max-w-2xl leading-8 text-[#d8cbb3]">
             La hermandad camina durante todo el año hacia la Semana Santa, manteniendo viva la oración,
@@ -533,10 +553,7 @@ export default function Home() {
               />
 
               <div className="p-8">
-                <h3 className="text-3xl font-semibold text-[#f3ead7]">
-                  {item.title}
-                </h3>
-
+                <h3 className="text-3xl font-semibold text-[#f3ead7]">{item.title}</h3>
                 <p className="mt-4 leading-8 text-[#d8cbb3]">{item.text}</p>
               </div>
             </div>
@@ -577,9 +594,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="grupo-joven" className="mx-auto max-w-7xl px-6 py-4 md:px-10">
+      <section id="grupo-joven" className="mx-auto max-w-7xl px-6 py-16 md:px-10">
         <div className={`${cardClass} overflow-hidden`}>
-          <div className="grid gap-8 p-8 md:grid-cols-[1.05fr_0.95fr] md:p-10">
+          <div className="grid gap-10 p-8 md:p-10 lg:grid-cols-[1fr_0.9fr]">
             <div>
               <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
                 <Sparkle className="h-5 w-5" />
@@ -587,41 +604,95 @@ export default function Home() {
               </div>
 
               <h3 className="text-3xl font-semibold text-[#f3ead7] md:text-4xl">
-                El futuro de la hermandad comienza en sus jóvenes
+                Jóvenes con ganas de vivir la Hermandad desde dentro
               </h3>
 
               <p className="mt-5 max-w-2xl leading-8 text-[#d8cbb3]">
-                El Grupo Joven es un espacio de formación, convivencia y participación para niños y
-                preadolescentes que desean vivir de cerca la fe y la tradición cofrade de la hermandad.
+                El Grupo Joven es el punto de encuentro para niños, adolescentes y jóvenes que quieren
+                acercarse a la Hermandad, participar en sus actividades y aprender poco a poco el valor
+                de nuestra tradición.
               </p>
 
               <p className="mt-4 max-w-2xl leading-8 text-[#d8cbb3]">
-                A través de actividades, cultos y encuentros, los más jóvenes aprenden a servir, compartir y
-                sentirse parte de una familia cristiana que mira al futuro sin olvidar sus raíces.
+                No se trata solo de ayudar en Semana Santa: también es convivir, formarse, hacer grupo y
+                sentirse parte de una familia que cuida su fe, su historia y su futuro.
               </p>
+
+              <a
+                href={GOOGLE_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-7 inline-flex rounded-2xl border border-[#f3ead7]/40 bg-[#f3ead7] px-6 py-4 font-semibold text-[#070504] transition hover:bg-white"
+              >
+                Solicitar información para el Grupo Joven
+              </a>
             </div>
 
-            <div className="rounded-[1.8rem] border border-[#f3ead7]/12 bg-black/30 p-6 backdrop-blur">
-              <p className="text-sm font-semibold text-[#f3ead7]">
-                Contenido para este apartado
+            <div className="rounded-[1.8rem] border border-[#f3ead7]/12 bg-black/30 p-6">
+              <p className="text-sm uppercase tracking-[0.22em] text-[#d8cbb3]">
+                ¿Qué se puede hacer?
               </p>
 
               <div className="mt-5 space-y-4 text-[#d8cbb3]">
                 {[
-                  "Presentación del Grupo Joven y edades orientativas de participación",
-                  "Actividades, convivencias, cultos y participación en la vida de hermandad",
-                  "Información de contacto o formulario específico para familias",
-                ].map((text) => (
-                  <div key={text} className="rounded-2xl border border-[#f3ead7]/10 bg-[#f3ead7]/5 p-4">
-                    {text}
+                  "Participar en actividades y convivencias.",
+                  "Colaborar en cultos y actos de la Hermandad.",
+                  "Conocer mejor a los titulares y la historia de la cofradía.",
+                  "Preparar iniciativas para niños, adolescentes y familias.",
+                ].map((item) => (
+                  <div key={item} className="rounded-2xl border border-[#f3ead7]/10 bg-[#f3ead7]/5 p-4">
+                    {item}
                   </div>
                 ))}
               </div>
             </div>
           </div>
+
+          <div className="border-t border-[#f3ead7]/10 px-8 py-10 md:px-10">
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div>
+                <div className="mb-5 flex items-center gap-3 text-[#f3ead7]">
+                  <CalendarDays className="h-5 w-5" />
+                  <h4 className="text-2xl font-semibold">Agenda del Grupo Joven</h4>
+                </div>
+
+                <div className="space-y-4">
+                  {youngGroupEvents.map((event) => (
+                    <div key={event.title} className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-5">
+                      <p className="text-sm uppercase tracking-[0.18em] text-[#d8cbb3]">
+                        {event.date}
+                      </p>
+                      <h5 className="mt-2 text-xl font-semibold text-[#f3ead7]">
+                        {event.title}
+                      </h5>
+                      <p className="mt-2 leading-7 text-[#d8cbb3]">{event.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-5 flex items-center gap-3 text-[#f3ead7]">
+                  <ScrollText className="h-5 w-5" />
+                  <h4 className="text-2xl font-semibold">Noticias del Grupo Joven</h4>
+                </div>
+
+                <div className="space-y-4">
+                  {youngGroupNews.map((news) => (
+                    <div key={news.title} className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-5">
+                      <h5 className="text-xl font-semibold text-[#f3ead7]">
+                        {news.title}
+                      </h5>
+                      <p className="mt-2 leading-7 text-[#d8cbb3]">{news.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-
+      
       <section id="ingreso" className="mx-auto max-w-7xl px-6 py-10 md:px-10">
         <div className={`${cardClass} overflow-hidden`}>
           <div className="grid gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:p-10">
@@ -642,9 +713,7 @@ export default function Home() {
             </div>
 
             <div className="rounded-[1.8rem] border border-[#f3ead7]/12 bg-black/30 p-6 backdrop-blur">
-              <p className="text-sm font-semibold text-[#f3ead7]">
-                Formulario oficial
-              </p>
+              <p className="text-sm font-semibold text-[#f3ead7]">Formulario oficial</p>
 
               <div className="mt-4 rounded-2xl border border-dashed border-[#f3ead7]/22 bg-[#f3ead7]/5 p-4 text-sm leading-7 text-[#d8cbb3]">
                 Pulse el botón inferior para abrir la solicitud oficial de ingreso en una nueva pestaña.
@@ -697,9 +766,7 @@ export default function Home() {
           <div className="mb-10">
             <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
               <ScrollText className="h-5 w-5" />
-              <span className="text-sm tracking-[0.25em]">
-                ANUNCIOS OFICIALES
-              </span>
+              <span className="text-sm tracking-[0.25em]">ANUNCIOS OFICIALES</span>
             </div>
 
             <h3 className="text-3xl font-semibold text-[#f3ead7] md:text-4xl">
@@ -780,9 +847,7 @@ export default function Home() {
             <div>
               <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
                 <Church className="h-5 w-5" />
-                <span className="text-sm tracking-[0.25em]">
-                  PRESENCIA OFICIAL
-                </span>
+                <span className="text-sm tracking-[0.25em]">PRESENCIA OFICIAL</span>
               </div>
 
               <h3 className="text-3xl font-semibold text-[#f3ead7]">
