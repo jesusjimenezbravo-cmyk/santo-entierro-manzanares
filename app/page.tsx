@@ -16,7 +16,6 @@ import {
   Phone,
   ScrollText,
   Shield,
-  Sparkle,
   Sparkles,
   Users,
   type LucideIcon,
@@ -34,71 +33,6 @@ function getDaysUntilGoodFriday() {
   const diff = GOOD_FRIDAY_DATE.getTime() - today.getTime();
   return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
-
-const heroImages = [
-  { src: "/galeria/virgen-soledad.jpg", alt: "Nuestra Señora de la Soledad" },
-  { src: "/galeria/cristo-yacente.jpg", alt: "Santo Entierro" },
-];
-
-const galleryImages = [
-  {
-    src: "/galeria/virgen-soledad.jpg",
-    title: "Nuestra Señora de la Soledad",
-    description:
-      "Imagen titular mariana de la hermandad, signo de recogimiento, dolor sereno y esperanza cristiana.",
-  },
-  {
-    src: "/galeria/cristo-yacente.jpg",
-    title: "Santo Entierro",
-    description:
-      "Cristo yacente, centro devocional de la hermandad y misterio que acompaña la estación de penitencia del Viernes Santo.",
-  },
-  {
-    src: "/escudo.png",
-    title: "Escudo de la Hermandad",
-    description:
-      "Símbolo de identidad, pertenencia y memoria cofrade de la Hermandad del Santo Entierro y Nuestra Señora de la Soledad.",
-  },
-];
-
-const events = [
-  {
-    date: "Cuaresma",
-    title: "Cultos preparatorios",
-    description:
-      "Convocatorias, celebraciones y actos de preparación espiritual previos a la Semana Santa, vividos desde el recogimiento, la oración y la vida de hermandad.",
-  },
-  {
-    date: "Viernes Santo",
-    title: "Estación de penitencia",
-    description:
-      "Información oficial sobre horarios, recorrido, organización y avisos para acompañar con respeto y solemnidad la salida procesional de la hermandad.",
-  },
-  {
-    date: "Durante todo el año",
-    title: "Vida de hermandad",
-    description:
-      "Cabildos, encuentros, actividades, avisos y comunicaciones dirigidas a hermanos, devotos y fieles de Manzanares.",
-  },
-];
-
-const announcements = [
-  {
-    date: "Próximamente",
-    title: "Cultos y convocatorias",
-    text: "La hermandad comunicará en este espacio sus cultos, convocatorias, horarios y avisos oficiales.",
-  },
-  {
-    date: "Información oficial",
-    title: "Vida de hermandad",
-    text: "Los hermanos y devotos podrán consultar aquí la información relevante de la vida de hermandad.",
-  },
-  {
-    date: "Tablón digital",
-    title: "Avisos importantes",
-    text: "Este tablón digital nace para conservar una comunicación clara, solemne y ordenada durante todo el año.",
-  },
-];
 
 type YoungCalendarEvent = {
   date: string;
@@ -170,6 +104,71 @@ function getEventsForDay(date: string) {
   return youngCalendarEvents.filter((event) => event.date === date);
 }
 
+const heroImages = [
+  { src: "/galeria/virgen-soledad.jpg", alt: "Nuestra Señora de la Soledad" },
+  { src: "/galeria/cristo-yacente.jpg", alt: "Santo Entierro" },
+];
+
+const galleryImages = [
+  {
+    src: "/galeria/virgen-soledad.jpg",
+    title: "Nuestra Señora de la Soledad",
+    description:
+      "Imagen titular mariana de la hermandad, signo de recogimiento, dolor sereno y esperanza cristiana.",
+  },
+  {
+    src: "/galeria/cristo-yacente.jpg",
+    title: "Santo Entierro",
+    description:
+      "Cristo yacente, centro devocional de la hermandad y misterio que acompaña la estación de penitencia del Viernes Santo.",
+  },
+  {
+    src: "/escudo.png",
+    title: "Escudo de la Hermandad",
+    description:
+      "Símbolo de identidad, pertenencia y memoria cofrade de la Hermandad del Santo Entierro y Nuestra Señora de la Soledad.",
+  },
+];
+
+const events = [
+  {
+    date: "Cuaresma",
+    title: "Cultos preparatorios",
+    description:
+      "Convocatorias, celebraciones y actos de preparación espiritual previos a la Semana Santa, vividos desde el recogimiento, la oración y la vida de hermandad.",
+  },
+  {
+    date: "Viernes Santo",
+    title: "Estación de penitencia",
+    description:
+      "Información oficial sobre horarios, recorrido, organización y avisos para acompañar con respeto y solemnidad la salida procesional de la hermandad.",
+  },
+  {
+    date: "Durante todo el año",
+    title: "Vida de hermandad",
+    description:
+      "Cabildos, encuentros, actividades, avisos y comunicaciones dirigidas a hermanos, devotos y fieles de Manzanares.",
+  },
+];
+
+const announcements = [
+  {
+    date: "Próximamente",
+    title: "Cultos y convocatorias",
+    text: "La hermandad comunicará en este espacio sus cultos, convocatorias, horarios y avisos oficiales.",
+  },
+  {
+    date: "Información oficial",
+    title: "Vida de hermandad",
+    text: "Los hermanos y devotos podrán consultar aquí la información relevante de la vida de hermandad.",
+  },
+  {
+    date: "Tablón digital",
+    title: "Avisos importantes",
+    text: "Este tablón digital nace para conservar una comunicación clara, solemne y ordenada durante todo el año.",
+  },
+];
+
 const quickLinks = [
   { label: "Inicio", href: "#inicio" },
   { label: "Historia", href: "#historia" },
@@ -233,7 +232,7 @@ export default function Home() {
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
   const [daysUntilGoodFriday, setDaysUntilGoodFriday] = useState(0);
   const [selectedYoungEvent, setSelectedYoungEvent] =
-  useState<YoungCalendarEvent | null>(null);
+    useState<YoungCalendarEvent | null>(null);
 
   useEffect(() => {
     setDaysUntilGoodFriday(getDaysUntilGoodFriday());
@@ -637,7 +636,134 @@ export default function Home() {
         </div>
       </section>
 
-      
+      <section id="grupo-joven" className="mx-auto max-w-7xl px-6 py-16 md:px-10">
+        <div className={`${cardClass} overflow-visible`}>
+          <div className="p-8 md:p-10">
+            <div className="mb-8">
+              <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
+                <CalendarDays className="h-5 w-5" />
+                <span className="text-sm tracking-[0.24em]">GRUPO JOVEN</span>
+              </div>
+
+              <h3 className="text-3xl font-semibold text-[#f3ead7] md:text-4xl">
+                Calendario del Grupo Joven
+              </h3>
+
+              <p className="mt-4 max-w-3xl leading-8 text-[#d8cbb3]">
+                Consulta las actividades, convivencias, cultos y encuentros previstos para el Grupo Joven.
+                Pasa el cursor sobre los días marcados para ver el evento y haz clic para abrir más detalles.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {monthNames.map((month, monthIndex) => {
+                const daysInMonth = getDaysInMonth(youngCalendarYear, monthIndex);
+                const firstDayOffset = getFirstDayOffset(youngCalendarYear, monthIndex);
+
+                return (
+                  <div
+                    key={month}
+                    className="rounded-[1.7rem] border border-[#f3ead7]/10 bg-black/30 p-5 shadow-[0_14px_45px_rgba(0,0,0,0.28)]"
+                  >
+                    <h4 className="mb-4 text-center text-2xl font-semibold text-[#f3ead7]">
+                      {month}
+                    </h4>
+
+                    <div className="mb-2 grid grid-cols-7 gap-1 text-center text-xs uppercase tracking-[0.18em] text-[#d8cbb3]/80">
+                      {weekDays.map((day) => (
+                        <div key={day}>{day}</div>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-7 gap-1">
+                      {Array.from({ length: firstDayOffset }).map((_, index) => (
+                        <div key={`empty-${month}-${index}`} className="h-10" />
+                      ))}
+
+                      {Array.from({ length: daysInMonth }).map((_, index) => {
+                        const day = index + 1;
+                        const date = `${youngCalendarYear}-${String(monthIndex + 1).padStart(
+                          2,
+                          "0"
+                        )}-${String(day).padStart(2, "0")}`;
+
+                        const dayEvents = getEventsForDay(date);
+                        const hasEvent = dayEvents.length > 0;
+
+                        return (
+                          <button
+                            key={date}
+                            type="button"
+                            onClick={() => {
+                              if (hasEvent) setSelectedYoungEvent(dayEvents[0]);
+                            }}
+                            className={`group relative flex h-10 items-center justify-center rounded-xl border text-sm transition ${
+                              hasEvent
+                                ? "border-[#f3ead7]/35 bg-[#f3ead7] font-semibold text-[#070504] hover:bg-white"
+                                : "border-[#f3ead7]/8 bg-black/20 text-[#d8cbb3] hover:bg-[#f3ead7]/8"
+                            }`}
+                          >
+                            {day}
+
+                            {hasEvent && (
+                              <div className="pointer-events-none absolute left-1/2 top-11 z-50 hidden w-72 -translate-x-1/2 rounded-2xl border border-[#f3ead7]/20 bg-[#080808] p-4 text-left text-[#f3ead7] shadow-[0_20px_60px_rgba(0,0,0,0.65)] group-hover:block">
+                                <p className="text-xs uppercase tracking-[0.2em] text-[#d8cbb3]">
+                                  {dayEvents[0].date}
+                                </p>
+                                <p className="mt-2 text-base font-semibold">
+                                  {dayEvents[0].title}
+                                </p>
+                                <p className="mt-2 text-sm leading-6 text-[#d8cbb3]">
+                                  {dayEvents[0].description}
+                                </p>
+                                <p className="mt-3 text-xs text-[#d8cbb3]/80">
+                                  Haz clic para ver más.
+                                </p>
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {selectedYoungEvent && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 px-6 backdrop-blur-sm">
+            <div className="w-full max-w-xl rounded-[2rem] border border-[#f3ead7]/15 bg-[#080808] p-8 shadow-[0_30px_90px_rgba(0,0,0,0.75)]">
+              <p className="text-sm uppercase tracking-[0.24em] text-[#d8cbb3]">
+                {selectedYoungEvent.date}
+              </p>
+
+              <h3 className="mt-3 text-3xl font-semibold text-[#f3ead7]">
+                {selectedYoungEvent.title}
+              </h3>
+
+              <p className="mt-5 leading-8 text-[#d8cbb3]">
+                {selectedYoungEvent.description}
+              </p>
+
+              <div className="mt-5 rounded-2xl border border-[#f3ead7]/10 bg-[#f3ead7]/5 p-4 text-[#d8cbb3]">
+                <span className="font-semibold text-[#f3ead7]">Lugar: </span>
+                {selectedYoungEvent.location}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedYoungEvent(null)}
+                className="mt-7 w-full rounded-2xl border border-[#f3ead7]/40 bg-[#f3ead7] px-6 py-4 font-semibold text-[#070504] transition hover:bg-white"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )}
+      </section>
+
       <section id="ingreso" className="mx-auto max-w-7xl px-6 py-10 md:px-10">
         <div className={`${cardClass} overflow-hidden`}>
           <div className="grid gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:p-10">
