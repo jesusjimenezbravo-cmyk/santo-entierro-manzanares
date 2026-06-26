@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import {
   Accessibility,
   CalendarDays,
+  ChevronLeft,
   ChevronRight,
   Church,
   Clock3,
@@ -41,6 +42,15 @@ type YoungCalendarEvent = {
   location: string;
 };
 
+type GeneralEvent = {
+  date: string;
+  category: string;
+  title: string;
+  description: string;
+  time: string;
+  location: string;
+};
+
 const youngCalendarYear = 2026;
 
 const youngCalendarEvents: YoungCalendarEvent[] = [
@@ -70,6 +80,45 @@ const youngCalendarEvents: YoungCalendarEvent[] = [
     title: "Encuentro de verano",
     description:
       "Actividad de convivencia antes del descanso estival.",
+    location: "Por confirmar",
+  },
+];
+
+const generalEvents: GeneralEvent[] = [
+  {
+    date: "2026-02-21",
+    category: "Cuaresma",
+    title: "Cultos preparatorios",
+    description:
+      "Celebración de los cultos previos a la Semana Santa, con especial invitación a hermanos, fieles y devotos.",
+    time: "20:00 h",
+    location: "Parroquia / sede canónica",
+  },
+  {
+    date: "2026-03-15",
+    category: "Hermandad",
+    title: "Cabildo general",
+    description:
+      "Convocatoria para tratar asuntos de interés de la Hermandad y preparar la próxima estación de penitencia.",
+    time: "Por confirmar",
+    location: "Casa de Hermandad",
+  },
+  {
+    date: "2026-04-03",
+    category: "Viernes Santo",
+    title: "Estación de penitencia",
+    description:
+      "Salida procesional de la Hermandad del Santo Entierro y Nuestra Señora de la Soledad por las calles de Manzanares.",
+    time: "Por confirmar",
+    location: "Manzanares",
+  },
+  {
+    date: "2026-05-10",
+    category: "Vida de Hermandad",
+    title: "Jornada de convivencia",
+    description:
+      "Encuentro de hermanos y devotos para compartir una jornada de convivencia y vida cristiana.",
+    time: "Por confirmar",
     location: "Por confirmar",
   },
 ];
@@ -127,27 +176,6 @@ const galleryImages = [
     title: "Escudo de la Hermandad",
     description:
       "Símbolo de identidad, pertenencia y memoria cofrade de la Hermandad del Santo Entierro y Nuestra Señora de la Soledad.",
-  },
-];
-
-const events = [
-  {
-    date: "Cuaresma",
-    title: "Cultos preparatorios",
-    description:
-      "Convocatorias, celebraciones y actos de preparación espiritual previos a la Semana Santa, vividos desde el recogimiento, la oración y la vida de hermandad.",
-  },
-  {
-    date: "Viernes Santo",
-    title: "Estación de penitencia",
-    description:
-      "Información oficial sobre horarios, recorrido, organización y avisos para acompañar con respeto y solemnidad la salida procesional de la hermandad.",
-  },
-  {
-    date: "Durante todo el año",
-    title: "Vida de hermandad",
-    description:
-      "Cabildos, encuentros, actividades, avisos y comunicaciones dirigidas a hermanos, devotos y fieles de Manzanares.",
   },
 ];
 
@@ -231,8 +259,11 @@ const buttonSecondary =
 export default function Home() {
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
   const [daysUntilGoodFriday, setDaysUntilGoodFriday] = useState(0);
+  const [selectedYoungMonth, setSelectedYoungMonth] = useState(0);
   const [selectedYoungEvent, setSelectedYoungEvent] =
     useState<YoungCalendarEvent | null>(null);
+  const [selectedGeneralEvent, setSelectedGeneralEvent] =
+    useState<GeneralEvent>(generalEvents[0]);
 
   useEffect(() => {
     setDaysUntilGoodFriday(getDaysUntilGoodFriday());
@@ -243,6 +274,15 @@ export default function Home() {
 
     return () => window.clearInterval(interval);
   }, []);
+
+  const daysInSelectedMonth = getDaysInMonth(
+    youngCalendarYear,
+    selectedYoungMonth
+  );
+  const firstDayOffset = getFirstDayOffset(
+    youngCalendarYear,
+    selectedYoungMonth
+  );
 
   return (
     <main
@@ -278,16 +318,6 @@ export default function Home() {
       />
 
       <div
-        className="fixed inset-0 -z-10 opacity-[0.075]"
-        style={{
-          backgroundImage:
-            "linear-gradient(135deg, transparent 0%, rgba(243,234,215,0.10) 48%, transparent 52%), linear-gradient(45deg, transparent 0%, rgba(243,234,215,0.06) 48%, transparent 52%)",
-          backgroundSize: "180px 180px",
-          mixBlendMode: "soft-light",
-        }}
-      />
-
-      <div
         className="fixed inset-0 -z-10 opacity-[0.35]"
         style={{
           background:
@@ -303,15 +333,6 @@ export default function Home() {
                 src="/escudo.png"
                 alt="Escudo de la Hermandad"
                 className="h-9 w-9 object-contain"
-              />
-              <motion.div
-                className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(243,234,215,0.22),transparent)]"
-                initial={{ opacity: 0.16, x: "-20%" }}
-                animate={{
-                  opacity: [0.08, 0.24, 0.08],
-                  x: ["-20%", "20%", "-20%"],
-                }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
               />
             </div>
 
@@ -339,7 +360,10 @@ export default function Home() {
         </div>
       </header>
 
-      <section id="inicio" className="relative overflow-hidden border-b border-[#f3ead7]/10">
+      <section
+        id="inicio"
+        className="relative overflow-hidden border-b border-[#f3ead7]/10"
+      >
         <div className="absolute inset-0">
           <motion.div
             className="absolute left-1/2 top-16 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-[#f3ead7]/8 blur-3xl"
@@ -388,10 +412,9 @@ export default function Home() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[#d8cbb3]">
-              Bajo el signo de la fe, el silencio y la esperanza, esta web nace como casa digital de la
-              Hermandad del Santo Entierro y Nuestra Señora de la Soledad de Manzanares. Un espacio para
-              custodiar su memoria, anunciar sus cultos y mantener viva la comunicación con hermanos,
-              fieles y devotos.
+              Bajo el signo de la fe, el silencio y la esperanza, esta web nace
+              como casa digital de la Hermandad del Santo Entierro y Nuestra
+              Señora de la Soledad de Manzanares.
             </p>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -422,8 +445,12 @@ export default function Home() {
                     className="rounded-3xl border border-[#f3ead7]/10 bg-black/25 p-4 shadow-[0_0_40px_rgba(243,234,215,0.06)] backdrop-blur"
                   >
                     <IconComponent className="mb-3 h-5 w-5 text-[#f3ead7]" />
-                    <p className="text-sm font-semibold text-[#f3ead7]">{item.title}</p>
-                    <p className="mt-1 text-sm leading-6 text-[#d8cbb3]">{item.text}</p>
+                    <p className="text-sm font-semibold text-[#f3ead7]">
+                      {item.title}
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-[#d8cbb3]">
+                      {item.text}
+                    </p>
                   </div>
                 );
               })}
@@ -469,8 +496,8 @@ export default function Home() {
                   </p>
 
                   <p className="mx-auto mt-3 max-w-md leading-7 text-[#d8cbb3]">
-                    Nuestros titulares, el Santo Entierro y Nuestra Señora de la Soledad, son el corazón
-                    de nuestra devoción y tradición cofrade.
+                    Nuestros titulares son el corazón de nuestra devoción y
+                    tradición cofrade.
                   </p>
                 </div>
               </div>
@@ -487,7 +514,9 @@ export default function Home() {
             return (
               <div key={item.title} className={`${cardClass} p-7`}>
                 <IconComponent className="mb-4 h-10 w-10 text-[#f3ead7]" />
-                <h2 className="text-xl font-semibold text-[#f3ead7]">{item.title}</h2>
+                <h2 className="text-xl font-semibold text-[#f3ead7]">
+                  {item.title}
+                </h2>
                 <p className="mt-3 leading-7 text-[#d8cbb3]">{item.text}</p>
               </div>
             );
@@ -505,20 +534,22 @@ export default function Home() {
             {daysUntilGoodFriday}
           </h2>
 
-          <p className="mt-3 text-xl text-[#d8cbb3]">días para la Estación de Penitencia</p>
-
-          <p className="mx-auto mt-6 max-w-2xl leading-8 text-[#d8cbb3]">
-            La hermandad camina durante todo el año hacia la Semana Santa, manteniendo viva la oración,
-            la preparación y el compromiso de sus hermanos.
+          <p className="mt-3 text-xl text-[#d8cbb3]">
+            días para la Estación de Penitencia
           </p>
         </div>
       </section>
 
-      <section id="historia" className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:px-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <section
+        id="historia"
+        className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:px-10 lg:grid-cols-[1.1fr_0.9fr]"
+      >
         <div>
           <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
             <HeartHandshake className="h-5 w-5" />
-            <span className="text-sm tracking-[0.25em]">HISTORIA Y DEVOCIÓN</span>
+            <span className="text-sm tracking-[0.25em]">
+              HISTORIA Y DEVOCIÓN
+            </span>
           </div>
 
           <h3 className="text-3xl font-semibold text-[#f3ead7] md:text-4xl">
@@ -526,20 +557,24 @@ export default function Home() {
           </h3>
 
           <p className="mt-6 max-w-2xl leading-8 text-[#d8cbb3]">
-            La Hermandad del Santo Entierro y Nuestra Señora de la Soledad custodia una devoción marcada
-            por el silencio, la contemplación y el acompañamiento a Cristo yacente y a su Madre en la Soledad.
+            La Hermandad del Santo Entierro y Nuestra Señora de la Soledad
+            custodia una devoción marcada por el silencio, la contemplación y
+            el acompañamiento a Cristo yacente y a su Madre en la Soledad.
           </p>
 
           <p className="mt-4 max-w-2xl leading-8 text-[#d8cbb3]">
-            Esta web quiere recoger ese espíritu con respeto y belleza: anunciar los cultos, conservar la historia,
-            reunir a los hermanos y abrir una puerta cercana a todos los fieles que se acercan a la hermandad.
+            Esta web quiere recoger ese espíritu con respeto y belleza:
+            anunciar los cultos, conservar la historia, reunir a los hermanos y
+            abrir una puerta cercana a todos los fieles.
           </p>
         </div>
 
         <div className={`${cardClass} p-7`}>
           <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
             <ImageIcon className="h-5 w-5" />
-            <span className="text-sm tracking-[0.22em]">CONTENIDO DE LA WEB</span>
+            <span className="text-sm tracking-[0.22em]">
+              CONTENIDO DE LA WEB
+            </span>
           </div>
 
           <h4 className="text-2xl font-semibold text-[#f3ead7]">
@@ -553,7 +588,10 @@ export default function Home() {
               "Información de junta de gobierno, sede canónica y vida interna",
               "Formularios, contacto y comunicaciones oficiales",
             ].map((text) => (
-              <div key={text} className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-4">
+              <div
+                key={text}
+                className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-4"
+              >
                 {text}
               </div>
             ))}
@@ -584,7 +622,7 @@ export default function Home() {
               src: "/galeria/virgen-soledad.jpg",
               alt: "Nuestra Señora de la Soledad",
               title: "Nuestra Señora de la Soledad",
-              text: "Imagen mariana titular de la Hermandad, símbolo de recogimiento, esperanza y amor maternal en los momentos más difíciles.",
+              text: "Imagen mariana titular de la Hermandad, símbolo de recogimiento, esperanza y amor maternal.",
             },
           ].map((item) => (
             <div key={item.title} className={`overflow-hidden ${cardClass}`}>
@@ -595,7 +633,9 @@ export default function Home() {
               />
 
               <div className="p-8">
-                <h3 className="text-3xl font-semibold text-[#f3ead7]">{item.title}</h3>
+                <h3 className="text-3xl font-semibold text-[#f3ead7]">
+                  {item.title}
+                </h3>
                 <p className="mt-4 leading-8 text-[#d8cbb3]">{item.text}</p>
               </div>
             </div>
@@ -613,23 +653,26 @@ export default function Home() {
           <h3 className="text-3xl font-semibold text-[#f3ead7] md:text-4xl">
             Imágenes de la hermandad
           </h3>
-
-          <p className="mt-4 max-w-2xl leading-8 text-[#d8cbb3]">
-            Un espacio destinado a recoger fotografías de cultos, titulares, patrimonio, vida de hermandad
-            y estación de penitencia.
-          </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           {galleryImages.map((image) => (
             <div key={image.title} className={`overflow-hidden ${cardClass}`}>
               <div className="flex aspect-[4/3] items-center justify-center bg-black/35 p-8">
-                <img src={image.src} alt={image.title} className="h-full w-full object-contain" />
+                <img
+                  src={image.src}
+                  alt={image.title}
+                  className="h-full w-full object-contain"
+                />
               </div>
 
               <div className="p-6">
-                <h4 className="text-xl font-semibold text-[#f3ead7]">{image.title}</h4>
-                <p className="mt-3 leading-7 text-[#d8cbb3]">{image.description}</p>
+                <h4 className="text-xl font-semibold text-[#f3ead7]">
+                  {image.title}
+                </h4>
+                <p className="mt-3 leading-7 text-[#d8cbb3]">
+                  {image.description}
+                </p>
               </div>
             </div>
           ))}
@@ -650,84 +693,116 @@ export default function Home() {
               </h3>
 
               <p className="mt-4 max-w-3xl leading-8 text-[#d8cbb3]">
-                Consulta las actividades, convivencias, cultos y encuentros previstos para el Grupo Joven.
-                Pasa el cursor sobre los días marcados para ver el evento y haz clic para abrir más detalles.
+                Selecciona un mes para consultar las actividades previstas. Los
+                días marcados contienen eventos del Grupo Joven.
               </p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {monthNames.map((month, monthIndex) => {
-                const daysInMonth = getDaysInMonth(youngCalendarYear, monthIndex);
-                const firstDayOffset = getFirstDayOffset(youngCalendarYear, monthIndex);
+            <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSelectedYoungMonth((prev) =>
+                      prev === 0 ? 11 : prev - 1
+                    )
+                  }
+                  className="rounded-2xl border border-[#f3ead7]/20 bg-black/30 p-3 text-[#f3ead7] transition hover:bg-[#f3ead7]/10"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
 
-                return (
-                  <div
+                <div className="min-w-[220px] rounded-2xl border border-[#f3ead7]/15 bg-[#f3ead7] px-6 py-3 text-center text-xl font-semibold text-[#070504]">
+                  {monthNames[selectedYoungMonth]} {youngCalendarYear}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSelectedYoungMonth((prev) =>
+                      prev === 11 ? 0 : prev + 1
+                    )
+                  }
+                  className="rounded-2xl border border-[#f3ead7]/20 bg-black/30 p-3 text-[#f3ead7] transition hover:bg-[#f3ead7]/10"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-2">
+                {monthNames.map((month, index) => (
+                  <button
                     key={month}
-                    className="rounded-[1.7rem] border border-[#f3ead7]/10 bg-black/30 p-5 shadow-[0_14px_45px_rgba(0,0,0,0.28)]"
+                    type="button"
+                    onClick={() => setSelectedYoungMonth(index)}
+                    className={`rounded-full border px-4 py-2 text-sm transition ${
+                      selectedYoungMonth === index
+                        ? "border-[#f3ead7] bg-[#f3ead7] text-[#070504]"
+                        : "border-[#f3ead7]/15 bg-black/25 text-[#d8cbb3] hover:bg-[#f3ead7]/10"
+                    }`}
                   >
-                    <h4 className="mb-4 text-center text-2xl font-semibold text-[#f3ead7]">
-                      {month}
-                    </h4>
+                    {month.slice(0, 3)}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-                    <div className="mb-2 grid grid-cols-7 gap-1 text-center text-xs uppercase tracking-[0.18em] text-[#d8cbb3]/80">
-                      {weekDays.map((day) => (
-                        <div key={day}>{day}</div>
-                      ))}
-                    </div>
+            <div className="mx-auto max-w-3xl rounded-[2rem] border border-[#f3ead7]/10 bg-black/30 p-6">
+              <div className="mb-3 grid grid-cols-7 gap-2 text-center text-xs uppercase tracking-[0.18em] text-[#d8cbb3]/80">
+                {weekDays.map((day) => (
+                  <div key={day}>{day}</div>
+                ))}
+              </div>
 
-                    <div className="grid grid-cols-7 gap-1">
-                      {Array.from({ length: firstDayOffset }).map((_, index) => (
-                        <div key={`empty-${month}-${index}`} className="h-10" />
-                      ))}
+              <div className="grid grid-cols-7 gap-2">
+                {Array.from({ length: firstDayOffset }).map((_, index) => (
+                  <div key={`empty-${index}`} className="h-14" />
+                ))}
 
-                      {Array.from({ length: daysInMonth }).map((_, index) => {
-                        const day = index + 1;
-                        const date = `${youngCalendarYear}-${String(monthIndex + 1).padStart(
-                          2,
-                          "0"
-                        )}-${String(day).padStart(2, "0")}`;
+                {Array.from({ length: daysInSelectedMonth }).map((_, index) => {
+                  const day = index + 1;
+                  const date = `${youngCalendarYear}-${String(
+                    selectedYoungMonth + 1
+                  ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
-                        const dayEvents = getEventsForDay(date);
-                        const hasEvent = dayEvents.length > 0;
+                  const dayEvents = getEventsForDay(date);
+                  const hasEvent = dayEvents.length > 0;
 
-                        return (
-                          <button
-                            key={date}
-                            type="button"
-                            onClick={() => {
-                              if (hasEvent) setSelectedYoungEvent(dayEvents[0]);
-                            }}
-                            className={`group relative flex h-10 items-center justify-center rounded-xl border text-sm transition ${
-                              hasEvent
-                                ? "border-[#f3ead7]/35 bg-[#f3ead7] font-semibold text-[#070504] hover:bg-white"
-                                : "border-[#f3ead7]/8 bg-black/20 text-[#d8cbb3] hover:bg-[#f3ead7]/8"
-                            }`}
-                          >
-                            {day}
+                  return (
+                    <button
+                      key={date}
+                      type="button"
+                      onClick={() => {
+                        if (hasEvent) setSelectedYoungEvent(dayEvents[0]);
+                      }}
+                      className={`group relative flex h-14 items-center justify-center rounded-2xl border text-base transition ${
+                        hasEvent
+                          ? "border-[#f3ead7]/45 bg-[#f3ead7] font-semibold text-[#070504] hover:bg-white"
+                          : "border-[#f3ead7]/8 bg-black/20 text-[#d8cbb3] hover:bg-[#f3ead7]/8"
+                      }`}
+                    >
+                      {day}
 
-                            {hasEvent && (
-                              <div className="pointer-events-none absolute left-1/2 top-11 z-50 hidden w-72 -translate-x-1/2 rounded-2xl border border-[#f3ead7]/20 bg-[#080808] p-4 text-left text-[#f3ead7] shadow-[0_20px_60px_rgba(0,0,0,0.65)] group-hover:block">
-                                <p className="text-xs uppercase tracking-[0.2em] text-[#d8cbb3]">
-                                  {dayEvents[0].date}
-                                </p>
-                                <p className="mt-2 text-base font-semibold">
-                                  {dayEvents[0].title}
-                                </p>
-                                <p className="mt-2 text-sm leading-6 text-[#d8cbb3]">
-                                  {dayEvents[0].description}
-                                </p>
-                                <p className="mt-3 text-xs text-[#d8cbb3]/80">
-                                  Haz clic para ver más.
-                                </p>
-                              </div>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
+                      {hasEvent && (
+                        <div className="pointer-events-none absolute left-1/2 top-16 z-50 hidden w-72 -translate-x-1/2 rounded-2xl border border-[#f3ead7]/20 bg-[#080808] p-4 text-left text-[#f3ead7] shadow-[0_20px_60px_rgba(0,0,0,0.65)] group-hover:block">
+                          <p className="text-xs uppercase tracking-[0.2em] text-[#d8cbb3]">
+                            {dayEvents[0].date}
+                          </p>
+                          <p className="mt-2 text-base font-semibold">
+                            {dayEvents[0].title}
+                          </p>
+                          <p className="mt-2 text-sm leading-6 text-[#d8cbb3]">
+                            {dayEvents[0].description}
+                          </p>
+                          <p className="mt-3 text-xs text-[#d8cbb3]/80">
+                            Haz clic para ver más.
+                          </p>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -777,17 +852,20 @@ export default function Home() {
               </h3>
 
               <p className="mt-5 max-w-2xl leading-8 text-[#d8cbb3]">
-                Quienes deseen incorporarse a la Hermandad del Santo Entierro y Nuestra Señora de la
-                Soledad podrán iniciar su solicitud desde este apartado. Ser hermano es participar de una
-                tradición de fe, servicio, oración y compromiso con la vida de la corporación.
+                Quienes deseen incorporarse a la Hermandad del Santo Entierro y
+                Nuestra Señora de la Soledad podrán iniciar su solicitud desde
+                este apartado.
               </p>
             </div>
 
             <div className="rounded-[1.8rem] border border-[#f3ead7]/12 bg-black/30 p-6 backdrop-blur">
-              <p className="text-sm font-semibold text-[#f3ead7]">Formulario oficial</p>
+              <p className="text-sm font-semibold text-[#f3ead7]">
+                Formulario oficial
+              </p>
 
               <div className="mt-4 rounded-2xl border border-dashed border-[#f3ead7]/22 bg-[#f3ead7]/5 p-4 text-sm leading-7 text-[#d8cbb3]">
-                Pulse el botón inferior para abrir la solicitud oficial de ingreso en una nueva pestaña.
+                Pulse el botón inferior para abrir la solicitud oficial de
+                ingreso en una nueva pestaña.
               </div>
 
               <a
@@ -813,22 +891,91 @@ export default function Home() {
           <h3 className="text-3xl font-semibold text-[#f3ead7] md:text-4xl">
             Tablón de cultos y eventos
           </h3>
+
+          <p className="mt-4 max-w-3xl leading-8 text-[#d8cbb3]">
+            Selecciona un acto para consultar la información completa. Este
+            tablón puede servir como espacio vivo para cultos, cabildos,
+            convocatorias y avisos importantes.
+          </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {events.map((event) => (
-            <div key={event.title} className={`${cardClass} p-6`}>
-              <p className="text-sm uppercase tracking-[0.18em] text-[#f3ead7]">
-                {event.date}
-              </p>
-              <h4 className="mt-3 text-xl font-semibold text-[#f3ead7]">
-                {event.title}
-              </h4>
-              <p className="mt-3 leading-7 text-[#d8cbb3]">
-                {event.description}
-              </p>
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="space-y-4">
+            {generalEvents.map((event) => (
+              <button
+                key={event.title}
+                type="button"
+                onClick={() => setSelectedGeneralEvent(event)}
+                className={`w-full rounded-[1.7rem] border p-5 text-left transition ${
+                  selectedGeneralEvent.title === event.title
+                    ? "border-[#f3ead7]/45 bg-[#f3ead7] text-[#070504]"
+                    : "border-[#f3ead7]/10 bg-black/25 text-[#d8cbb3] hover:bg-[#f3ead7]/8"
+                }`}
+              >
+                <p
+                  className={`text-xs uppercase tracking-[0.22em] ${
+                    selectedGeneralEvent.title === event.title
+                      ? "text-[#070504]/70"
+                      : "text-[#d8cbb3]"
+                  }`}
+                >
+                  {event.category} · {event.date}
+                </p>
+
+                <h4 className="mt-2 text-xl font-semibold">{event.title}</h4>
+              </button>
+            ))}
+          </div>
+
+          <div className={`${cardClass} p-8`}>
+            <p className="text-sm uppercase tracking-[0.24em] text-[#d8cbb3]">
+              {selectedGeneralEvent.category}
+            </p>
+
+            <h4 className="mt-3 text-3xl font-semibold text-[#f3ead7] md:text-4xl">
+              {selectedGeneralEvent.title}
+            </h4>
+
+            <p className="mt-5 leading-8 text-[#d8cbb3]">
+              {selectedGeneralEvent.description}
+            </p>
+
+            <div className="mt-7 grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-4">
+                <p className="text-sm uppercase tracking-[0.2em] text-[#d8cbb3]">
+                  Fecha
+                </p>
+                <p className="mt-2 text-lg font-semibold text-[#f3ead7]">
+                  {selectedGeneralEvent.date}
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-4">
+                <p className="text-sm uppercase tracking-[0.2em] text-[#d8cbb3]">
+                  Hora
+                </p>
+                <p className="mt-2 text-lg font-semibold text-[#f3ead7]">
+                  {selectedGeneralEvent.time}
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-[#f3ead7]/10 bg-black/25 p-4 md:col-span-2">
+                <p className="text-sm uppercase tracking-[0.2em] text-[#d8cbb3]">
+                  Lugar
+                </p>
+                <p className="mt-2 text-lg font-semibold text-[#f3ead7]">
+                  {selectedGeneralEvent.location}
+                </p>
+              </div>
             </div>
-          ))}
+
+            <a
+              href="#contacto"
+              className="mt-7 inline-flex rounded-2xl border border-[#f3ead7]/30 bg-black/30 px-6 py-4 font-semibold text-[#f3ead7] transition hover:bg-[#f3ead7]/10"
+            >
+              Consultar más información
+            </a>
+          </div>
         </div>
       </section>
 
@@ -837,7 +984,9 @@ export default function Home() {
           <div className="mb-10">
             <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
               <ScrollText className="h-5 w-5" />
-              <span className="text-sm tracking-[0.25em]">ANUNCIOS OFICIALES</span>
+              <span className="text-sm tracking-[0.25em]">
+                ANUNCIOS OFICIALES
+              </span>
             </div>
 
             <h3 className="text-3xl font-semibold text-[#f3ead7] md:text-4xl">
@@ -847,7 +996,10 @@ export default function Home() {
 
           <div className="grid gap-5 md:grid-cols-3">
             {announcements.map((notice) => (
-              <div key={notice.title} className={`${cardClass} p-6 leading-7 text-[#d8cbb3]`}>
+              <div
+                key={notice.title}
+                className={`${cardClass} p-6 leading-7 text-[#d8cbb3]`}
+              >
                 <p className="text-sm uppercase tracking-[0.18em] text-[#f3ead7]">
                   {notice.date}
                 </p>
@@ -873,12 +1025,6 @@ export default function Home() {
             <h2 className="mt-3 text-4xl font-semibold text-[#f3ead7] md:text-5xl">
               Últimas publicaciones
             </h2>
-
-            <div className="mx-auto mt-4 h-px w-40 bg-gradient-to-r from-transparent via-[#d8cbb3]/50 to-transparent" />
-
-            <p className="mx-auto mt-6 max-w-2xl leading-8 text-[#d8cbb3]">
-              Sigue toda la actualidad de la Hermandad del Santo Entierro y Nuestra Señora de la Soledad a través de Facebook.
-            </p>
           </div>
 
           <div className="mx-auto max-w-[520px] overflow-hidden rounded-[2rem] border border-[#f3ead7]/15 bg-black/40 p-3 shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
@@ -918,7 +1064,9 @@ export default function Home() {
             <div>
               <div className="mb-4 flex items-center gap-3 text-[#f3ead7]">
                 <Church className="h-5 w-5" />
-                <span className="text-sm tracking-[0.25em]">PRESENCIA OFICIAL</span>
+                <span className="text-sm tracking-[0.25em]">
+                  PRESENCIA OFICIAL
+                </span>
               </div>
 
               <h3 className="text-3xl font-semibold text-[#f3ead7]">
@@ -926,9 +1074,8 @@ export default function Home() {
               </h3>
 
               <p className="mt-5 max-w-2xl leading-8 text-[#d8cbb3]">
-                Esta propuesta busca ofrecer una presencia digital digna, clara y solemne: una página donde
-                la hermandad pueda anunciar, convocar, conservar su memoria y acompañar a quienes desean
-                acercarse a su vida espiritual y cofrade.
+                Esta propuesta busca ofrecer una presencia digital digna, clara
+                y solemne.
               </p>
             </div>
 
@@ -988,8 +1135,8 @@ export default function Home() {
             </div>
 
             <p className="mt-4 max-w-sm leading-7 text-[#d8cbb3]">
-              Web oficial de la Hermandad del Santo Entierro y Nuestra Señora de la Soledad de Manzanares,
-              al servicio de sus hermanos, devotos y fieles.
+              Web oficial de la Hermandad del Santo Entierro y Nuestra Señora de
+              la Soledad de Manzanares.
             </p>
           </div>
 
@@ -1028,7 +1175,8 @@ export default function Home() {
         </div>
 
         <div className="border-t border-[#f3ead7]/10 px-6 py-4 text-center text-sm text-[#d8cbb3]/70 md:px-10">
-          © 2026 Hermandad del Santo Entierro y Nuestra Señora de la Soledad · Manzanares
+          © 2026 Hermandad del Santo Entierro y Nuestra Señora de la Soledad ·
+          Manzanares
         </div>
       </footer>
     </main>
